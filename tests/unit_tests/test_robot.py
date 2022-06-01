@@ -2,8 +2,8 @@ import unittest
 
 from robot.board import Board
 from robot.robot import Robot
-from utils.funcs import get_direction
-from utils.enums import RobotError, Direction
+from robot.utils.funcs import get_direction
+from robot.utils.enums import RobotError, Direction, Turn
 
 class RobotTestCase(unittest.TestCase):
     def setUp(self):
@@ -15,27 +15,27 @@ class RobotTestCase(unittest.TestCase):
         self.assertEqual(self.robot.move(self.board), RobotError.WOULD_FALL)
 
     def test_turn_robot_left(self):
-        self.robot.turn_left()
+        self.robot.turn(Turn.LEFT)
         self.assertEqual(self.robot.direction, Direction.NORTH)
-        self.robot.turn_left()
+        self.robot.turn(Turn.LEFT)
         self.assertEqual(self.robot.direction, Direction.WEST)
-        self.robot.turn_left()
+        self.robot.turn(Turn.LEFT)
         self.assertEqual(self.robot.direction, Direction.SOUTH)
-        self.robot.turn_left()
+        self.robot.turn(Turn.LEFT)
         self.assertEqual(self.robot.direction, Direction.EAST)
 
     def test_turn_robot_right(self):
-        self.robot.turn_right()
+        self.robot.turn(Turn.RIGHT)
         self.assertEqual(self.robot.direction, Direction.SOUTH)
-        self.robot.turn_right()
+        self.robot.turn(Turn.RIGHT)
         self.assertEqual(self.robot.direction, Direction.WEST)
-        self.robot.turn_right()
+        self.robot.turn(Turn.RIGHT)
         self.assertEqual(self.robot.direction, Direction.NORTH)
-        self.robot.turn_right()
+        self.robot.turn(Turn.RIGHT)
         self.assertEqual(self.robot.direction, Direction.EAST)
 
     def test_move_robot(self):
-        self.robot.turn_right()
+        self.robot.turn(Turn.RIGHT)
         self.robot.move(self.board)
         self.assertEqual(self.robot.x, 4)
         self.assertEqual(self.robot.y, 1)

@@ -4,7 +4,7 @@ from unittest.mock import patch
 
 from robot.board import Board
 from main import Application
-from utils.enums import RobotError, Direction, ERROR_MESSAGES
+from robot.utils.enums import RobotError, Direction, ERROR_MESSAGES
 
 class ApplicationTestCase(unittest.TestCase):
     def setUp(self):

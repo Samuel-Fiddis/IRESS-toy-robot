@@ -1,5 +1,5 @@
 import re
-from typing import Optional, Sequence
+from typing import Optional, Sequence, Tuple
 
 from robot.utils.enums import Command, Direction
 
@@ -18,9 +18,9 @@ def get_direction(direction: str) -> Optional[Direction]:
         print("Direction not recognised.")
 
 
-def get_input() -> Sequence[str]:
-    var = input(">> ")
-    return re.split('\\W+', var)
+def get_input() -> Tuple[str, Sequence[str]]:
+    vars_string = input(">> ")
+    return vars_string, re.split('\\W+', vars_string)
 
 
 def display_options() -> None:

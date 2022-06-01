@@ -35,3 +35,9 @@ class ApplcationTestCase(unittest.TestCase):
     def test_application_moving_without_placement(self, stdout):
         self.app.run_cli()
         self.assertIn("Initial command must place the robot with PLACE X, Y, F ", stdout.getvalue())
+
+    @patch("sys.stdin", io.StringIO("PLACE A,0,NORTH\nQUIT"))
+    @patch('sys.stdout', new_callable = io.StringIO)
+    def test_poor_place_input(self, stdout):
+        self.app.run_cli()
+        self.assertIn("Command PLACE requires 3 variables of types Integer, Integer, Direction", stdout.getvalue())

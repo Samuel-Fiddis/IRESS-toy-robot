@@ -6,8 +6,9 @@ email: sam.fiddis@gmail.com"""
 
 from typing import Optional, Sequence
 from pyhocon import ConfigFactory
+import re
 
-from robot.utils.enums import Command, COMMAND_PARAMETERS, ERROR_MESSAGES, INITIAL_COMMANDS, RobotError, Direction
+from robot.utils.enums import Command, COMMAND_PARAMETERS, COMMAND_REGEX, ERROR_MESSAGES, INITIAL_COMMANDS, RobotError, Direction, Turn
 from robot.utils.funcs import get_command, get_direction, get_input, display_options
 from robot.robot import Robot
 from robot.board import Board
@@ -28,14 +29,14 @@ class Application:
         self._wait_till_robot_placement()
 
         while(self.running):
-            vars = get_input()
-            if self.check_command_inputs(vars):
+            vars_string, vars = get_input()
+            if self.check_command_inputs(vars_string):
                 self.run_command(*vars)
 
     def _wait_till_robot_placement(self) -> None:
         """Waits till the robot has been placed on the board before allowing other commands."""
         while(self.robot.placed == False and self.running):
-            vars = get_input()
+            vars_string, vars = get_input()
             if (get_command(vars[0]) not in INITIAL_COMMANDS):
                 print(
                     f"""Initial command must place the robot with PLACE X, Y, F where:
@@ -43,22 +44,21 @@ class Application:
                 Y is between 0 and {self.board.y_size - 1}
                 F is one of {", ".join([d.name for d in Direction])}""")
                 continue
-            elif self.check_command_inputs(vars):
+            elif self.check_command_inputs(vars_string):
                 self.run_command(*vars)
 
-    def check_command_inputs(self, vars: Sequence[str]) -> bool:
-        """Performs an initial check on the passed commands to determine if the satisfy constraints."""
+    def check_command_inputs(self, vars_string: str) -> bool:
+        """Performs an initial check on the passed commands to determine if they satisfy constraints."""
+        vars = re.split('\\W+', vars_string)
         if len(vars) == 0:
             return False
         command = get_command(vars[0])
         if command:
-            if len(vars) - 1 != len(COMMAND_PARAMETERS[command]):
-                print(
-                    f"Incorrect number of variables provided for command {command.name}, " + \
-                f"requires {len(COMMAND_PARAMETERS[command])} variables", end='')
+            if not re.match(COMMAND_REGEX[command], vars_string):
+                print(f"Command {command.name} requires {len(COMMAND_PARAMETERS[command])} variables", end='')
                 if len(COMMAND_PARAMETERS[command]) > 0:
-                    print(" of types " + ", ".join(COMMAND_PARAMETERS[command]), end="")
-                print("")
+                    print(" of types " + ", ".join(COMMAND_PARAMETERS[command]), end='')
+                print(". For help type HELP.")
                 return False
             else:
                 return True
@@ -83,9 +83,9 @@ class Application:
         elif command == Command.MOVE:
             res = self.robot.move(self.board)
         elif command == Command.LEFT:
-            self.robot.turn_left()
+            self.robot.turn(Turn.LEFT)
         elif command == Command.RIGHT:
-            self.robot.turn_right()
+            self.robot.turn(Turn.RIGHT)
         elif command == Command.REPORT:
             self.robot.report()
 

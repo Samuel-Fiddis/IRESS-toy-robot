@@ -1,5 +1,5 @@
 from enum import Enum, unique, auto
-
+import re
 
 @unique
 class Direction(Enum):
@@ -32,13 +32,22 @@ class RobotError(Enum):
     PLACE_OUTSIDE_BOUNDS = auto()
     WOULD_FALL = auto()
 
-
 ERROR_MESSAGES = {
     RobotError.NOT_PLACED: "Robot is not yet placed on the board.",
     RobotError.PLACE_OUTSIDE_BOUNDS: "Cannont place robot outside of board boundaries.",
     RobotError.WOULD_FALL: "Cannot move Robot. It would fall from the board!"}
 
 INITIAL_COMMANDS = [Command.HELP, Command.PLACE, Command.QUIT]
+
+COMMAND_REGEX = {
+    Command.HELP: f"{Command.HELP.name}$",
+    Command.PLACE: f'PLACE\s+\d+,\s?\d+,\s?({"|".join([dirc.name for dirc in Direction])})$',
+    Command.MOVE: f"{Command.MOVE.name}$",
+    Command.LEFT: f"{Command.LEFT.name}$",
+    Command.RIGHT: f"{Command.RIGHT.name}$",
+    Command.REPORT: f"{Command.REPORT.name}$",
+    Command.QUIT: f"{Command.QUIT.name}$"
+}
 
 COMMAND_PARAMETERS = {
     Command.HELP: [],

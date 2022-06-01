@@ -21,17 +21,9 @@ class Robot:
         self.y = y
         self.direction = d
 
-    def turn_left(self):
-        """Turn the robot to the left."""
-        self._turn(Turn.LEFT.value)
-
-    def turn_right(self):
-        """Turn the robot to the right."""
-        self._turn(Turn.RIGHT.value)
-
-    def _turn(self, turn: int):
-        """Uses the modulo function to pivot around directions."""
-        self.direction = Direction((self.direction.value + turn) % len(Direction))
+    def turn(self, turn: Turn):
+        """Turn the robot in the direction provided."""
+        self.direction = Direction((self.direction.value + turn.value) % len(Direction))
 
     def move(self, board: Board) -> Optional[RobotError]:
         """Moves the robot one space in the direction it is facing if possible."""
