@@ -28,14 +28,9 @@ class Command(Enum):
 
 @unique
 class RobotError(Enum):
-    NOT_PLACED = auto()
-    PLACE_OUTSIDE_BOUNDS = auto()
-    WOULD_FALL = auto()
-
-ERROR_MESSAGES = {
-    RobotError.NOT_PLACED: "Robot is not yet placed on the board.",
-    RobotError.PLACE_OUTSIDE_BOUNDS: "Cannont place robot outside of board boundaries.",
-    RobotError.WOULD_FALL: "Cannot move Robot. It would fall from the board!"}
+    NOT_PLACED = "Robot is not yet placed on the board."
+    PLACE_OUTSIDE_BOUNDS = "Cannont place robot outside of board boundaries."
+    WOULD_FALL = "Cannot move Robot. It would fall from the board!"
 
 INITIAL_COMMANDS = [Command.HELP, Command.PLACE, Command.QUIT]
 

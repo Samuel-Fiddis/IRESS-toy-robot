@@ -4,7 +4,7 @@ from unittest.mock import patch
 
 from robot.board import Board
 from main import Application
-from robot.utils.enums import RobotError, Direction, ERROR_MESSAGES
+from robot.utils.enums import RobotError, Direction
 
 class ApplicationTestCase(unittest.TestCase):
     def setUp(self):
@@ -41,15 +41,15 @@ class ApplicationTestCase(unittest.TestCase):
     @patch('sys.stdout', new_callable = io.StringIO)
     def test_place_robot_off_board(self, stdout):
         self.app.run_command("PLACE", "5", "2", "NORTH")
-        self.assertEqual(ERROR_MESSAGES[RobotError.PLACE_OUTSIDE_BOUNDS] + '\n', stdout.getvalue())
+        self.assertEqual(RobotError.PLACE_OUTSIDE_BOUNDS.value + '\n', stdout.getvalue())
 
     @patch('sys.stdout', new_callable = io.StringIO)
     def test_move_robot_off_board(self, stdout):
         self.app.run_command("PLACE", "4", "4", "NORTH")
         self.app.run_command("MOVE")
-        self.assertEqual(ERROR_MESSAGES[RobotError.WOULD_FALL] + '\n', stdout.getvalue())
+        self.assertEqual(RobotError.WOULD_FALL.value + '\n', stdout.getvalue())
 
     @patch('sys.stdout', new_callable = io.StringIO)
     def test_move_not_placed(self, stdout):
         self.app.run_command("MOVE")
-        self.assertEqual(ERROR_MESSAGES[RobotError.NOT_PLACED] + '\n', stdout.getvalue())
+        self.assertEqual(RobotError.NOT_PLACED.value + '\n', stdout.getvalue())

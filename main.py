@@ -8,7 +8,7 @@ from typing import Optional, Sequence
 from pyhocon import ConfigFactory
 import re
 
-from robot.utils.enums import Command, COMMAND_PARAMETERS, COMMAND_REGEX, ERROR_MESSAGES, INITIAL_COMMANDS, RobotError, Direction, Turn
+from robot.utils.enums import Command, COMMAND_PARAMETERS, COMMAND_REGEX, INITIAL_COMMANDS, RobotError, Direction, Turn
 from robot.utils.funcs import get_command, get_direction, get_input, display_options
 from robot.robot import Robot
 from robot.board import Board
@@ -90,7 +90,7 @@ class Application:
             self.robot.report()
 
         if res:
-            print(ERROR_MESSAGES[res])
+            print(res.value)
 
 
 if __name__ == "__main__":
